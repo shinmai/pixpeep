@@ -4,6 +4,8 @@ let heightInput = document.getElementById("heightInput");
 let pixfmtInput = document.getElementById("pixfmtInput");
 let alphaModeInput = document.getElementById("alphaModeInput");
 let byteOffsetInput = document.getElementById("byteOffsetInput");
+let invHorizInput = document.getElementById("invHorizInput");
+let invVertInput = document.getElementById("invVertInput");
 
 let data = null;
 
@@ -88,7 +90,11 @@ function update() {
 		return;
 	}
 
+	ctx.save();
+	ctx.scale(invHorizInput.checked?-1:1, invVertInput.checked?-1:1);
+	ctx.translate(invHorizInput.checked?-imageData.width:0, invVertInput.checked?-imageData.height:0);
 	ctx.putImageData(imageData, 0, 0);
+	ctx.restore();
 }
 
 function loadFile(file) {
