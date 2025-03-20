@@ -90,10 +90,16 @@ function update() {
 		return;
 	}
 
+	const offscreen = document.createElement('canvas');
+	offscreen.width = imageData.width;
+	offscreen.height = imageData.height;
+	const offscreenCtx = offscreen.getContext('2d');
+	offscreenCtx.putImageData(imageData, 0, 0);
+	
 	ctx.save();
 	ctx.scale(invHorizInput.checked?-1:1, invVertInput.checked?-1:1);
 	ctx.translate(invHorizInput.checked?-imageData.width:0, invVertInput.checked?-imageData.height:0);
-	ctx.putImageData(imageData, 0, 0);
+	ctx.drawImage(offscreen, 0, 0);
 	ctx.restore();
 }
 
@@ -119,6 +125,7 @@ heightInput.onchange = update;
 pixfmtInput.onchange = update;
 alphaModeInput.onchange = update;
 byteOffsetInput.onchange = update;
+invHorizInput.onchange = invVertInput.onchange = update;
 
 if (fileInput.files.length >= 1) {
 	loadFile(fileInput.files[0]);
